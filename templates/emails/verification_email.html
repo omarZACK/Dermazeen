@@ -1,0 +1,345 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to DERMAZEEN - Verify Your Email</title>
+    <style>
+        /* Reset styles for email compatibility */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', 'Helvetica', sans-serif;
+            line-height: 1.6;
+            color: #2C3E50;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #FBF4F4 0%, #BED2C7 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .email-wrapper {
+            width: 100%;
+            background: linear-gradient(135deg, #FBF4F4 0%, #BED2C7 100%);
+            padding: 2vh 2vw;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: min(600px, 90vw);
+            margin: 0 auto;
+            background: white;
+            border-radius: clamp(15px, 3vw, 20px);
+            box-shadow: 0 15px 35px rgba(233, 206, 203, 0.2);
+            overflow: hidden;
+            border: 1px solid rgba(233, 206, 203, 0.3);
+        }
+
+        .header {
+            background: linear-gradient(135deg, #E9CECB 0%, #BED2C7 100%);
+            padding: clamp(30px, 5vw, 40px) clamp(15px, 3vw, 20px);
+            text-align: center;
+            color: #2C3E50;
+            position: relative;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="20" cy="20" r="2" fill="rgba(255,255,255,0.3)"/><circle cx="80" cy="40" r="1.5" fill="rgba(255,255,255,0.3)"/><circle cx="40" cy="80" r="1" fill="rgba(255,255,255,0.3)"/><circle cx="70" cy="70" r="1.5" fill="rgba(255,255,255,0.3)"/></svg>');
+        }
+
+        .logo-container {
+            position: relative;
+            z-index: 1;
+            margin-bottom: clamp(15px, 3vw, 20px);
+        }
+
+        .logo {
+            width: clamp(100px, 20vw, 150px);
+            height: clamp(100px, 20vw, 150px);
+            margin: 0 auto 15px;
+            display: block;
+            filter: drop-shadow(0 4px 15px rgba(0, 0, 0, 0.1));
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: clamp(20px, 4vw, 26px);
+            font-weight: 300;
+            text-shadow: 0 2px 4px rgba(255, 255, 255, 0.5);
+            position: relative;
+            z-index: 1;
+        }
+
+        .content {
+            padding: clamp(30px, 5vw, 40px) clamp(20px, 4vw, 35px);
+            background: linear-gradient(135deg, #FFFFFF 0%, #FBF4F4 100%);
+        }
+
+        .content h2 {
+            color: #8B5A5A;
+            font-size: clamp(20px, 3.5vw, 24px);
+            margin-bottom: clamp(20px, 3vw, 25px);
+            font-weight: 400;
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .content p {
+            color: #666;
+            margin-bottom: clamp(15px, 2.5vw, 18px);
+            font-size: clamp(14px, 2.5vw, 16px);
+            line-height: 1.7;
+        }
+
+        .content p strong {
+            color: #2C3E50;
+        }
+
+        .verification-label {
+            color: #8B5A5A;
+            font-weight: 500;
+            font-size: clamp(16px, 3vw, 18px);
+            margin-bottom: clamp(12px, 2vw, 15px);
+            text-align: center;
+        }
+
+        .code-box {
+            background: linear-gradient(135deg, #FBF4F4 0%, #E9CECB 100%);
+            border: 2px solid #E9CECB;
+            padding: clamp(20px, 4vw, 25px);
+            text-align: center;
+            font-size: clamp(24px, 5vw, 32px);
+            font-weight: 600;
+            letter-spacing: clamp(3px, 1vw, 6px);
+            margin: clamp(20px, 3vw, 25px) 0;
+            border-radius: clamp(12px, 2vw, 15px);
+            color: #2C3E50;
+            box-shadow: 0 8px 25px rgba(233, 206, 203, 0.3);
+            position: relative;
+            overflow: hidden;
+            word-break: break-all;
+        }
+
+        .code-box::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(233, 206, 203, 0.3), transparent);
+            animation: shimmer 3s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
+        .expiry-info {
+            background: linear-gradient(135deg, #BED2C7 10%, #E8F0EC 100%);
+            border: 1px solid rgba(190, 210, 199, 0.5);
+            border-left: 4px solid #BED2C7;
+            padding: clamp(18px, 3vw, 20px);
+            margin: clamp(20px, 3vw, 25px) 0;
+            border-radius: clamp(8px, 1.5vw, 10px);
+            color: #2C3E50;
+        }
+
+        .expiry-info p {
+            margin: 5px 0;
+            font-size: clamp(14px, 2.5vw, 16px);
+        }
+
+        .skincare-tip {
+            background: linear-gradient(135deg, #FBF4F4 0%, #F5E8E8 100%);
+            border: 1px solid rgba(233, 206, 203, 0.4);
+            border-left: 4px solid #E9CECB;
+            padding: clamp(18px, 3vw, 20px);
+            margin: clamp(20px, 3vw, 25px) 0;
+            border-radius: clamp(8px, 1.5vw, 10px);
+            color: #2C3E50;
+        }
+
+        .footer {
+            background: linear-gradient(135deg, #FBF4F4 0%, #F8F8F8 100%);
+            padding: clamp(25px, 4vw, 30px) clamp(20px, 3vw, 25px);
+            text-align: center;
+            font-size: clamp(12px, 2vw, 13px);
+            color: #888;
+            border-top: 1px solid rgba(233, 206, 203, 0.2);
+        }
+
+        .footer p {
+            margin: clamp(8px, 1.5vw, 10px) 0;
+            line-height: 1.6;
+        }
+
+        .warning-text {
+            color: #B87B7B;
+            font-weight: 500;
+        }
+
+        .glow-dot {
+            display: inline-block;
+            width: clamp(6px, 1.5vw, 8px);
+            height: clamp(6px, 1.5vw, 8px);
+            background: #BED2C7;
+            border-radius: 50%;
+            margin-right: clamp(8px, 1.5vw, 10px);
+            animation: glow 2s ease-in-out infinite alternate;
+            flex-shrink: 0;
+        }
+
+        @keyframes glow {
+            from { box-shadow: 0 0 5px rgba(190, 210, 199, 0.5); }
+            to { box-shadow: 0 0 15px rgba(190, 210, 199, 0.9); }
+        }
+
+        .brand-accent {
+            color: #8B5A5A;
+            font-weight: 500;
+        }
+
+        .soft-highlight {
+            background: linear-gradient(135deg, #E9CECB 20%, transparent 80%);
+            padding: 2px 6px;
+            border-radius: 4px;
+            color: #2C3E50;
+        }
+
+        .gentle-border {
+            border: 1px solid rgba(233, 206, 203, 0.3);
+            border-radius: clamp(6px, 1.5vw, 8px);
+            padding: clamp(12px, 2.5vw, 15px);
+            background: rgba(251, 244, 244, 0.5);
+        }
+
+        /* Ensure consistent display across all devices */
+        @media screen {
+            .container {
+                width: 100%;
+                max-width: min(600px, 90vw);
+            }
+        }
+
+        /* Fine-tune for very small screens */
+        @media screen and (max-width: 400px) {
+            .email-wrapper {
+                padding: 1vh 1vw;
+            }
+
+            .code-box {
+                word-break: break-all;
+                overflow-wrap: break-word;
+            }
+        }
+
+        /* Fine-tune for very large screens */
+        @media screen and (min-width: 1200px) {
+            .container {
+                max-width: 600px;
+            }
+        }
+
+        /* Dark mode support for email clients that support it */
+        @media (prefers-color-scheme: dark) {
+            .container {
+                background: #2C3E50;
+                border: 1px solid rgba(233, 206, 203, 0.2);
+            }
+
+            .content {
+                background: linear-gradient(135deg, #2C3E50 0%, #34495e 100%);
+                color: #ecf0f1;
+            }
+
+            .content p {
+                color: #bdc3c7;
+            }
+        }
+
+        /* Print styles */
+        @media print {
+            .email-wrapper {
+                background: white;
+                padding: 0;
+            }
+
+            .container {
+                box-shadow: none;
+                border: 1px solid #ddd;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="email-wrapper">
+        <div class="container">
+            <div class="header">
+                <div class="logo-container">
+                    <img src="cid:logo_cid" alt="DERMAZEEN - Natural Skincare" class="logo">
+                </div>
+                <h1>Welcome to Your Skincare Journey</h1>
+            </div>
+
+            <div class="content">
+                <h2><span class="glow-dot"></span>Hello {{ user.get_full_name|default:"Beautiful" }}!</h2>
+
+                <p>Welcome to the <strong>DERMAZEEN</strong> skincare community! We're excited to help you achieve your <span class="brand-accent">natural glow</span>. To get started with your personalized skincare routine, please verify your email address.</p>
+
+                <div class="verification-label">Your Verification Code</div>
+
+                <div class="code-box">
+                    {{ verification_code }}
+                </div>
+
+                <div class="expiry-info">
+                    <p><strong>🕐 Code Expires:</strong></p>
+                    <p>Please enter this code before <strong>{{ expires_at|date:"F j, Y \a\t g:i A" }}</strong></p>
+                </div>
+
+                <div class="skincare-tip">
+                    <p><strong>💡 Gentle Skincare Tip:</strong> Remember that <span class="soft-highlight">gentle consistency</span> is the key to healthy, radiant skin! Our carefully curated routines will help nurture your skin naturally with botanical ingredients.</p>
+                </div>
+
+                <div class="gentle-border">
+                    <p><strong>What's Next?</strong></p>
+                    <p>Once verified, you'll unlock:</p>
+                    <p>✨ Personalized skincare routines<br>
+                    🌿 Natural ingredient recommendations<br>
+                    📊 Skin progress tracking<br>
+                    💬 Expert skincare guidance</p>
+                </div>
+
+            </div>
+
+            <div class="footer">
+                <p class="warning-text">If you didn't create this account, please ignore this email and your information will remain secure.</p>
+                <p>This is an automated message from DERMAZEEN. Please do not reply to this email.</p>
+                <p>For support, visit our help center or contact us at support@dermazeen.com</p>
+                <p>🌸 Wishing you beautiful, healthy skin!</p>
+                <p style="margin-top: 15px; font-size: 11px; color: #aaa;">
+                    © {{ current_year|default:"2024" }} DERMAZEEN. All rights reserved.<br>
+                    Your trusted partner in natural skincare.
+                </p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

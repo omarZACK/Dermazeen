@@ -1,15 +1,17 @@
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
-import re
+import phonenumbers
 
 
 def validate_phone_number(phone):
     """
-    Validate phone number format
+    Validate Syrian phone number starting with +963
     """
-    pattern = r'^\+?1?\d{9,15}$'
-    if not re.match(pattern, phone):
-        raise ValidationError(_('Enter a valid phone number.'))
+    parsed_number = phonenumbers.parse(phone, "SY")
+
+    if not phonenumbers.is_valid_number(parsed_number):
+        raise ValidationError(_('This phone number is not recognized as a valid Syrian number.'))
+
 
 
 def validate_license_number(license_number):

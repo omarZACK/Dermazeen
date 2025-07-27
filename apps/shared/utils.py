@@ -1,10 +1,8 @@
-# apps/shared/utils.py
 import os
 import uuid
 from django.core.files.storage import default_storage
 from PIL import Image
 import hashlib
-
 
 def generate_upload_path(instance, filename):
     """
@@ -14,17 +12,6 @@ def generate_upload_path(instance, filename):
     ext = filename.split('.')[-1]
     filename = f"{uuid.uuid4().hex}.{ext}"
     return f"{model_name}/{filename}"
-
-
-def generate_image_upload_path(instance, filename):
-    """
-    Generate upload path specifically for images
-    """
-    model_name = instance.__class__.__name__.lower()
-    ext = filename.split('.')[-1]
-    filename = f"{uuid.uuid4().hex}.{ext}"
-    return f"images/{model_name}/{filename}"
-
 
 def resize_image(image_path, max_width=1024, max_height=1024, quality=85):
     """
@@ -76,10 +63,7 @@ def safe_delete_file(file_path):
     """
     Safely delete a file if it exists
     """
-    try:
-        if default_storage.exists(file_path):
-            default_storage.delete(file_path)
-            return True
-    except Exception:
-        pass
+    if default_storage.exists(file_path):
+        default_storage.delete(file_path)
+        return True
     return False

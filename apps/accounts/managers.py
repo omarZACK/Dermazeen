@@ -8,7 +8,6 @@ class UserManager(BaseUserManager):
             raise ValueError("The Email must be set")
         email = self.normalize_email(email)
 
-        extra_fields.setdefault('is_active', True)
         user = self.model(email=email, phone=phone, **extra_fields)
         user.set_password(password)
         user.save(using=self._db)
@@ -16,20 +15,17 @@ class UserManager(BaseUserManager):
 
     def create_superuser(self, email, phone=None, password=None, **extra_fields):
         from apps.accounts.models import Admin
-
+        extra_fields.setdefault('is_active', True)
         extra_fields.setdefault('user_type', UserTypeChoices.ADMIN)
         extra_fields.setdefault('is_staff', True)
         extra_fields.setdefault('is_superuser', True)
 
-        if extra_fields.get('is_staff'):
+        if not extra_fields.get('is_staff'):
             raise ValueError('Superuser must have is_staff=True.')
-        if extra_fields.get('is_superuser'):
+        if not extra_fields.get('is_superuser'):
             raise ValueError('Superuser must have is_superuser=True.')
 
         user = self.create_user(email, phone, password, **extra_fields)
-
-        # Automatically create Admin profile
-        if not hasattr(user, 'admin'):
-            Admin.objects.create(user=user, admin_role=AdminRoleChoices.SUPER_ADMIN)
+        Admin.objects.create(user=user, admin_role=AdminRoleChoices.SUPER_ADMIN)
 
         return user
