@@ -1,0 +1,48 @@
+{% extends "admin/base.html" %}
+{% load i18n static %}
+
+{% block title %}Admin Profile | DERMAZEEN{% endblock %}
+
+{% block extrastyle %}
+  <link rel="stylesheet" href="{% static 'custom_admin/css/profile.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="breadcrumbs">
+  <a href="{% url 'admin:index' %}"><i class="fas fa-home"></i> Dashboard</a>
+  <i class="fas fa-chevron-right"></i>
+  <span class="active">Your Profile</span>
+</div>
+
+<div class="module profile-container">
+  <form method="post" enctype="multipart/form-data" class="profile-form-grid profile-form-bg">
+    {% csrf_token %}
+    <div class="profile-photo">
+      <div class="profile-photo-wrapper">
+        {% if user.profile_image %}
+          <img src="{{ user.profile_image.url }}" alt="Profile Image">
+        {% else %}
+          <i class="fas fa-user fa-5x" style="color: var(--primary-light);"></i>
+        {% endif %}
+      </div>
+      <div class="profile-field">
+        {{ form.profile_image.errors }}
+        {{ form.profile_image }}
+      </div>
+    </div>
+    <div>
+      <h2>Edit Profile</h2>
+      {% for field in form.visible_fields %}
+      <div class="profile-field">
+        {{ field.label_tag }}
+        {{ field }}
+        {{ field.errors }}
+      </div>
+      {% endfor %}
+      <div class="profile-submit">
+        <button type="submit">{% translate "Update Profile" %}</button>
+      </div>
+    </div>
+  </form>
+</div>
+{% endblock %}

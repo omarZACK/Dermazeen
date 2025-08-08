@@ -1,15 +1,16 @@
+from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
 from django.utils.translation import gettext_lazy as _
-from apps.accounts.models.admins import Admin
-from apps.shared.models import TimeStampedModel, ActiveModel
-from apps.shared.validators import validate_license_number
+from apps.admin.models import Admin
+from apps.shared.models import TimeStampedModel
+from apps.shared.utils import validate_license_number
+from django.conf import settings
 from apps.shared.enums import (
     UserTypeChoices,
     ApprovalStatusChoices
 )
-from django.conf import settings
 
-class Doctor(TimeStampedModel, ActiveModel):
+class Doctor(TimeStampedModel):
     """
     Doctor profile for medical professionals
     """
@@ -55,7 +56,7 @@ class Doctor(TimeStampedModel, ActiveModel):
         null=True,
         blank=True,
         related_name='approved_doctors',
-        limit_choices_to={'user_type': UserTypeChoices.ADMIN}
+        limit_choices_to={'user__user_type': UserTypeChoices.ADMIN}
     )
     rejection_reason = models.TextField(
         _('Rejection Reason'),
@@ -79,7 +80,8 @@ class Doctor(TimeStampedModel, ActiveModel):
         max_digits=3,
         decimal_places=2,
         null=True,
-        blank=True
+        blank=True,
+        validators=[MinValueValidator(0.0), MaxValueValidator(5.0)]
     )
 
     class Meta:

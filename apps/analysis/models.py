@@ -7,7 +7,7 @@ from apps.shared.enums import (
     SeverityLevelChoices
 )
 from apps.shared.models import TimeStampedModel, ActiveModel, SoftDeleteModel
-from apps.shared.validators import validate_confidence_score
+from apps.shared.utils.validators import validate_confidence_score
 
 User = get_user_model()
 

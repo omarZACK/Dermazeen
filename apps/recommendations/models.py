@@ -9,7 +9,7 @@ from apps.shared.enums import (
 from apps.shared.mixins import OrderedMixin
 from apps.shared.models import TimeStampedModel, ActiveModel, SoftDeleteModel
 from apps.assessment.models import Assessment
-from apps.shared.validators import validate_age_range,validate_proportion
+from apps.shared.utils import validate_age_range,validate_proportion
 
 # Create your models here.
 

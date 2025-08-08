@@ -9,7 +9,7 @@ from apps.shared.enums import (
 )
 from apps.shared.models import TimeStampedModel, ActiveModel, SoftDeleteModel
 from apps.recommendations.models import Recommendation
-from apps.shared.validators import validate_mood_rating, validate_adherence_rate
+from apps.shared.utils import validate_mood_rating, validate_adherence_rate
 
 User = get_user_model()
 

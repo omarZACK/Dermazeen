@@ -1,0 +1,111 @@
+/* main.css */
+/* ===== ENHANCED MAIN CONTENT ===== */
+#container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.main {
+    flex: 1;
+    padding: 32px;
+    margin-left: 280px;
+    margin-top: 72px;
+    min-height: calc(100vh - 72px);
+}
+
+.breadcrumbs {
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--border-light);
+    padding: 16px 24px;
+    border-radius: 16px;
+    margin-bottom: 32px;
+    box-shadow: var(--shadow-light);
+    display: flex;
+    align-items: center;
+    font-size: 0.9rem;
+}
+
+.breadcrumbs a {
+    color: var(--primary);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.breadcrumbs a:hover {
+    color: var(--primary-dark);
+}
+
+.breadcrumbs a i {
+    margin: 0 8px;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+}
+
+.breadcrumbs .active {
+    color: var(--text);
+    font-weight: 600;
+}
+
+/* ===== ENHANCED QUICK ACTIONS ===== */
+.quick-actions {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+    padding: 24px;
+}
+
+.quick-action-item {
+    background: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--border-light);
+    border-radius: 16px;
+    padding: 20px;
+    text-align: center;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.quick-action-item::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: var(--gradient-overlay);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.quick-action-item:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow);
+    border-color: var(--primary);
+}
+
+.quick-action-item:hover::before {
+    opacity: 1;
+}
+
+.quick-action-item a {
+    color: var(--primary);
+    text-decoration: none;
+    font-weight: 600;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    position: relative;
+    z-index: 1;
+}
+
+.quick-action-item a i {
+    font-size: 1.5rem;
+    margin-bottom: 4px;
+}

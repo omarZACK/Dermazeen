@@ -1,0 +1,62 @@
+/* responsive.css */
+/* ===== ENHANCED RESPONSIVE STYLES ===== */
+@media (max-width: 1024px) {
+    .main {
+        margin-left: 0;
+    }
+    footer {
+        width: 100%;
+        margin-left: 0;
+        border-radius: 0;
+    }
+}
+
+@media (max-width: 768px) {
+    #header {
+        padding: 12px 20px;
+        height: 64px;
+    }
+
+    .main {
+        margin-top: 64px;
+        padding: 20px;
+    }
+
+    #branding h1 {
+        font-size: 1.5rem;
+    }
+
+    #user-tools {
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    #user-tools strong {
+        margin-right: 0;
+        margin-bottom: 4px;
+    }
+
+    .dashboard .module {
+        overflow-x: auto;
+    }
+
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 480px) {
+    .quick-actions {
+        grid-template-columns: 1fr;
+    }
+
+    .breadcrumbs {
+        padding: 12px 16px;
+        font-size: 0.8rem;
+    }
+
+    .dashboard .module caption {
+        font-size: 1.1rem;
+        padding: 20px 20px 12px;
+    }
+}

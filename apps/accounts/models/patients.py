@@ -1,6 +1,6 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
-from apps.shared.enums import SkinTypeChoices
+from apps.shared.enums import SkinTypeChoices, GenderChoices
 from apps.shared.models import TimeStampedModel
 from django.conf import settings
 
@@ -63,6 +63,8 @@ class PatientProfile(TimeStampedModel):
             'skin_type', 'is_pregnant', 'user.birth_date',
             'user.gender', 'user.phone'
         ]
+        if self.user.gender == GenderChoices.MALE:
+            fields_to_check.remove('is_pregnant')
         completed_fields = 0
         total_fields = len(fields_to_check)
 

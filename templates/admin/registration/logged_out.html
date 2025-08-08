@@ -1,0 +1,48 @@
+{% extends "admin/base_site.html" %}
+{% load i18n static %}
+
+{% block title %}{% translate "Logged out" %} | DERMAZEEN{% endblock %}
+
+{% block extrastyle %}
+  <link rel="stylesheet" href="{% static 'custom_admin/css/base.css' %}">
+  <link rel="stylesheet" href="{% static 'custom_admin/css/main.css' %}">
+  <link rel="stylesheet" href="{% static 'custom_admin/css/forms.css' %}">
+  <link rel="stylesheet" href="{% static 'custom_admin/css/responsive.css' %}">
+  <link rel="stylesheet" href="{% static 'custom_admin/css/logged_out.css' %}">
+{% endblock %}
+
+{% block nav-sidebar %}{% endblock %}
+{% block nav-global %}{% endblock %}
+
+{% block content %}
+<div class="logout-container">
+  {% if messages %}
+    {% for message in messages %}
+      <div class="alert alert-{{ message.tags }}">
+        {{ message }}
+      </div>
+    {% endfor %}
+  {% endif %}
+
+  {% if user.is_authenticated %}
+    <h1>{% translate "You're still logged in" %}</h1>
+    <p class="subtext">
+      {% translate "You're currently logged in. To log out, please click below." %}
+    </p>
+    <a href="{% url 'logout' %}" class="button logout-btn">
+      <i class="fas fa-sign-out-alt"></i> {% translate "Log out now" %}
+    </a>
+  {% else %}
+    <h1>{% translate "Logged out" %}</h1>
+    {% if 'logout' in request.GET %}
+      <p class="subtext">
+        {% translate "Thanks for using DERMAZEEN. You have successfully logged out." %}
+      </p>
+    {% endif %}
+
+    <a href="{% url 'login' %}" class="button login-btn">
+      <i class="fas fa-sign-in-alt"></i> {% translate "Log in again" %}
+    </a>
+  {% endif %}
+</div>
+{% endblock %}

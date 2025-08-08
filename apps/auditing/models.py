@@ -1,14 +1,13 @@
 from django.contrib.auth import get_user_model
 from django.db import models
 from django.utils.translation import gettext_lazy as _
-
-from apps.accounts.models import Admin
+from apps.admin.models import Admin
 from apps.recommendations.models import Recommendation
+from apps.shared.models import TimeStampedModel, ActiveModel, SoftDeleteModel
 from apps.shared.enums import (
     ActionTypeChoices,
     AuditStatusChoices
 )
-from apps.shared.models import TimeStampedModel, ActiveModel, SoftDeleteModel
 
 User = get_user_model()
 

@@ -10,3 +10,8 @@ class Admin(TimeStampedModel):
 
     def __str__(self):
         return f"{self.user.email} - {self.admin_role}"
+
+    class Meta:
+        verbose_name = 'Admin'
+        verbose_name_plural = 'Admins'
+        db_table = 'admin'

@@ -3,12 +3,13 @@ from django.core.validators import EmailValidator
 from apps.accounts.managers import UserManager
 from apps.shared.models import TimeStampedModel, SoftDeleteModel
 from django.db import models
+from django.core.exceptions import ValidationError
+from datetime import date
+from apps.shared.utils import generate_upload_path,validate_phone_number
 from django.utils.translation import gettext_lazy as _
-from apps.shared.validators import validate_phone_number
 from apps.shared.enums import (
     GenderChoices, UserTypeChoices
 )
-from apps.shared.utils import generate_upload_path
 
 class User(AbstractUser, TimeStampedModel, SoftDeleteModel):
     """
@@ -30,7 +31,8 @@ class User(AbstractUser, TimeStampedModel, SoftDeleteModel):
         unique=True,
         null=True,
         blank=True,
-        validators=[validate_phone_number]
+        validators=[validate_phone_number],
+        error_messages={'unique': _('A user with this phone number already exists.')},
     )
 
     # Personal information
@@ -89,6 +91,11 @@ class User(AbstractUser, TimeStampedModel, SoftDeleteModel):
 
     def __str__(self):
         return f"{self.get_full_name} ({self.email})"
+
+    def clean(self):
+        super().clean()
+        if self.birth_date and self.birth_date > date.today():
+            raise ValidationError({'birth_date': _('Birth date cannot be in the future.')})
 
     @property
     def age(self):

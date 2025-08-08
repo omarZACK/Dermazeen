@@ -32,6 +32,8 @@ SITE_ID = 1
 ALLOWED_HOSTS = ['*']
 FRONTEND_URL = os.getenv('FRONTEND_URL')
 AUTH_USER_MODEL = 'accounts.User'
+LOGIN_URL = 'login'
+LOGIN_REDIRECT_URL = 'home'
 
 # Application definition
 
@@ -46,8 +48,10 @@ INSTALLED_APPS = [
     # Packages
     'rest_framework',
     'rest_framework_simplejwt',
+    'rest_framework_simplejwt.token_blacklist',
     # Apps
     'apps.accounts.apps.AccountsConfig',
+    'apps.admin.apps.AdminConfig',
     'apps.analysis.apps.AnalysisConfig',
     'apps.assessment.apps.AssessmentConfig',
     'apps.auditing.apps.AuditingConfig',
@@ -123,7 +127,6 @@ AUTH_PASSWORD_VALIDATORS = [
 
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
-    'social_core.backends.google.GoogleOAuth2',
 ]
 
 REST_FRAMEWORK = {
@@ -148,7 +151,7 @@ LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'Asia/Damascus'
 
 USE_I18N = True
-
+USE_L10N = True
 USE_TZ = True
 
 
@@ -181,8 +184,3 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
 DEFAULT_FROM_EMAIL = os.environ.get('DEFAULT_FROM_EMAIL')
-
-# Google Auth Configuration
-
-GOOGLE_OAUTH_CLIENT_ID = os.environ.get('GOOGLE_CLIENT_ID')
-GOOGLE_OAUTH_CLIENT_SECRET = os.environ.get('GOOGLE_CLIENT_SECRET')

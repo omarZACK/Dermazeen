@@ -1,0 +1,24 @@
+/* dark_mode.css */
+/* ===== DARK MODE VARIABLES ===== */
+.dark-mode {
+    --text: #E8E6E3;
+    --text-light: #B8B5B2;
+    --text-muted: #8B8985;
+    --light: #2C3E50;
+    --white: #34495E;
+    --dark: #E8E6E3;
+    --border: rgba(255, 255, 255, 0.1);
+    --border-light: rgba(255, 255, 255, 0.05);
+    --header-bg: linear-gradient(135deg, #34495E 0%, #2C3E50 100%);
+    --sidebar-bg: linear-gradient(135deg, #2C3E50 0%, #34495E 100%);
+    --card-bg: linear-gradient(135deg, #34495E 0%, #3A4A5C 100%);
+    --gradient-overlay: linear-gradient(135deg, rgba(255, 255, 255, 0.02) 0%, rgba(255, 255, 255, 0.01) 100%);
+    --shadow-light: 0 2px 8px rgba(0, 0, 0, 0.1);
+    --shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    --shadow-strong: 0 8px 32px rgba(0, 0, 0, 0.2);
+    background: linear-gradient(135deg, #2C3E50 0%, #34495E 50%, #3A4A5C 100%);
+}
+
+.dark-mode body {
+    background: linear-gradient(135deg, #2C3E50 0%, #34495E 50%, #3A4A5C 100%);
+}
