@@ -32,8 +32,6 @@ SITE_ID = 1
 ALLOWED_HOSTS = ['*']
 FRONTEND_URL = os.getenv('FRONTEND_URL')
 AUTH_USER_MODEL = 'accounts.User'
-LOGIN_URL = 'login'
-LOGIN_REDIRECT_URL = 'home'
 
 # Application definition
 
@@ -169,6 +167,13 @@ STATIC_ROOT = BASE_DIR / 'static'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+# AI Models directory
+AI_MODELS_DIR = os.path.join(BASE_DIR, 'ai_models')
+
+# Create directories if they don't exist
+os.makedirs(AI_MODELS_DIR, exist_ok=True)
+os.makedirs(os.path.join(MEDIA_ROOT, 'skin_images'), exist_ok=True)
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field

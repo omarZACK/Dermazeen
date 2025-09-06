@@ -3,11 +3,11 @@ from django.utils.translation import gettext_lazy as _
 from django.db import models
 from apps.shared.enums import (
     AssessmentStatusChoices,
-    QuestionTypeChoices
+    QuestionTypeChoices, QuestionPhase
 )
 from apps.shared.mixins import OrderedMixin
 from apps.shared.models import TimeStampedModel, ActiveModel, SoftDeleteModel
-from apps.analysis.models import SkinAnalysis
+from apps.analysis.models import SkinAnalysis, SkinCondition
 
 # Create your models here.
 
@@ -25,12 +25,18 @@ class Assessment(ActiveModel, TimeStampedModel, SoftDeleteModel):
         help_text=_("Associated skin analysis record.")
     )
     started_at = models.DateTimeField(
+        auto_now_add=True,
         help_text=_("Timestamp when the assessment was started.")
     )
     completed_at = models.DateTimeField(
         null=True,
         blank=True,
         help_text=_("Timestamp when the assessment was completed.")
+    )
+    current_phase = models.CharField(
+        max_length=30,
+        choices=QuestionPhase.choices,
+        default=QuestionPhase.SCREENING
     )
     assessment_status = models.CharField(
         max_length=20,
@@ -40,7 +46,7 @@ class Assessment(ActiveModel, TimeStampedModel, SoftDeleteModel):
     )
 
     def __str__(self):
-        return f"Assessment #{self.pk} for User {self.user.username}"
+        return f"Assessment #{self.pk} for User {self.user.get_full_name}"
 
     class Meta:
         verbose_name = _("Assessment")
@@ -55,6 +61,13 @@ class Assessment(ActiveModel, TimeStampedModel, SoftDeleteModel):
         ]
 
 class QuestionTemplate(ActiveModel, TimeStampedModel, SoftDeleteModel, OrderedMixin):
+    question_name = models.CharField(
+        max_length=40,
+        null=False,
+        blank=False,
+        unique=True,
+        help_text=_("Question title.")
+    )
     question_text = models.TextField(
         help_text=_("The text of the question to be displayed.")
     )
@@ -69,9 +82,9 @@ class QuestionTemplate(ActiveModel, TimeStampedModel, SoftDeleteModel, OrderedMi
         help_text=_("JSON array of choices or parameters for UI rendering.")
     )
 
-    condition_triggers = models.TextField(
-        null=True,
-        blank=True,
+    condition_triggers = models.ManyToManyField(
+        SkinCondition,
+        related_name="condition_triggers",
         help_text=_("Conditions that trigger this question (e.g. acne -> hormonal questions).")
     )
 

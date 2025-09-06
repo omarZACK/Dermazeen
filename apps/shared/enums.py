@@ -17,6 +17,21 @@ class UserTypeChoices(TChoices):
     ADMIN = 'admin', _('Admin')
 
 
+class StressLevelChoices(TChoices):
+    VERY_LOW = "very_low", _("Very low")
+    LOW = "low", _("Low")
+    MODERATE = "moderate", _("Moderate")
+    HIGH = "high", _("High")
+    VERY_HIGH = "very_high", _("Very high")
+
+
+class SunExposureChoices(TChoices):
+    MINIMAL = "minimal", _("Minimal (indoor most of day)")
+    LIGHT = "light", _("Light (short outdoor periods)")
+    MODERATE = "moderate", _("Moderate (regular outdoor activities)")
+    HIGH = "high", _("High (work/spend lots of time outdoors)")
+    VERY_HIGH = "very_high", _("Very high (beach, sports, etc.)")
+
 class SkinTypeChoices(TChoices):
     """Skin type choices"""
     DRY = 'dry', _('Dry')
@@ -50,19 +65,6 @@ class AnalysisStatusChoices(TChoices):
     COMPLETED = 'completed', _('Completed')
     FAILED = 'failed', _('Failed')
 
-class ConditionCategoryChoices(TChoices):
-    """Categories for skin conditions"""
-    ACNE = 'acne', _('Acne')
-    PIGMENTATION = 'pigmentation', _('Pigmentation')
-    AGING = 'aging', _('Aging Signs')
-    SENSITIVITY = 'sensitivity', _('Sensitivity')
-    INFLAMMATION = 'inflammation', _('Inflammation')
-    BARRIER_DAMAGE = 'barrier_damage', _('Barrier Damage')
-    HORMONAL = 'hormonal', _('Hormonal')
-    LIFESTYLE = 'lifestyle', _('Lifestyle Related')
-    CHRONIC = 'chronic', _('Chronic Conditions')
-    GENETIC ='genetic', _('Genetic Related')
-
 class SeverityLevelChoices(TChoices):
     """Severity level for detected conditions"""
     NONE = 'none', _('No Problem')
@@ -88,6 +90,18 @@ class QuestionTypeChoices(TChoices):
     TEXT = 'text', _('Text Input')
     BOOLEAN = 'boolean', _('Yes/No')
     SCALE = 'scale', _('Rating Scale')
+
+class QuestionPhase(TChoices):
+    """Different phases of the questioning process"""
+    SCREENING = "screening_condition", _("Screening Condition")
+    BASIC_INFO = "basic_info", _("Basic Info")
+    SPECIFIC_CONDITION = "specific_condition", _("Specific Condition")
+    OILINESS_ASSESSMENT = "oiliness_assessment", _("Oiliness Assessment")
+    SENSITIVITY_ASSESSMENT = "sensitivity_assessment", _("Sensitivity Assessment")
+    HYDRATION_ASSESSMENT = "hydration_assessment", _("Hydration Assessment")
+    LIFESTYLE = "lifestyle", _("Lifestyle")
+    ANALYSIS = "analysis", _("Analysis")
+    COMPLETE = "complete", _("Complete")
 
 
 # --------------------------------------------------------------

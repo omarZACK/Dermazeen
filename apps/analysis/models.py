@@ -3,7 +3,6 @@ from django.utils.translation import gettext_lazy as _
 from django.db import models
 from apps.shared.enums import (
     AnalysisStatusChoices,
-    ConditionCategoryChoices,
     SeverityLevelChoices
 )
 from apps.shared.models import TimeStampedModel, ActiveModel, SoftDeleteModel
@@ -20,22 +19,32 @@ class SkinAnalysis(ActiveModel, TimeStampedModel, SoftDeleteModel):
         help_text=_("User who submitted the image for analysis.")
     )
     image_url = models.URLField(
+        null=True,
         help_text=_("URL of the uploaded skin image.")
     )
     image_metadata = models.JSONField(
+        null=True,
         help_text=_("JSON data containing image resolution, lighting, etc.")
     )
     analyzed_at = models.DateTimeField(
+        null=True,
         help_text=_("Timestamp when the analysis was performed.")
     )
     analysis_status = models.CharField(
         max_length=10,
         choices=AnalysisStatusChoices.choices,
+        default=AnalysisStatusChoices.COMPLETED,
         help_text=_("Status of the analysis process.")
     )
     confidence_score = models.FloatField(
+        null=True,
         validators=[validate_confidence_score],
         help_text=_("Overall confidence score for the analysis.")
+    )
+    results_data = models.JSONField(
+        null=True,
+        blank=True,
+        help_text=_("JSON data containing the detailed analysis results.")
     )
 
     def __str__(self):
@@ -53,6 +62,22 @@ class SkinAnalysis(ActiveModel, TimeStampedModel, SoftDeleteModel):
             models.Index(fields=['confidence_score']),
         ]
 
+class ConditionCategory(models.Model):
+    """Categories for skin conditions"""
+    name = models.CharField(max_length=50, unique=True)
+    description = models.TextField(blank=True, null=True)  # optional
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = _("Condition Category")
+        verbose_name_plural = _("Condition Categories")
+        ordering = ['id']
+        indexes =[
+            models.Index(fields=['name']),
+            models.Index(fields=['description']),
+        ]
 
 class SkinCondition(ActiveModel, TimeStampedModel, SoftDeleteModel):
     condition_name = models.CharField(
@@ -63,9 +88,9 @@ class SkinCondition(ActiveModel, TimeStampedModel, SoftDeleteModel):
     description = models.TextField(
         help_text=_("Detailed description of the skin condition.")
     )
-    category = models.CharField(
-        max_length=20,
-        choices=ConditionCategoryChoices.choices,
+    categories = models.ManyToManyField(
+        ConditionCategory,
+        related_name="conditions",
         help_text=_("Category under which this condition falls.")
     )
     is_chronic = models.BooleanField(
@@ -85,7 +110,6 @@ class SkinCondition(ActiveModel, TimeStampedModel, SoftDeleteModel):
         verbose_name_plural = _("Skin Conditions")
         ordering = ['condition_name']
         indexes = [
-            models.Index(fields=['category']),
             models.Index(fields=['is_chronic']),
             models.Index(fields=['requires_medical_attention']),
         ]

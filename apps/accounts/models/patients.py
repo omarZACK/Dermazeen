@@ -1,6 +1,6 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
-from apps.shared.enums import SkinTypeChoices, GenderChoices
+from apps.shared.enums import SkinTypeChoices, GenderChoices,SunExposureChoices,StressLevelChoices
 from apps.shared.models import TimeStampedModel
 from django.conf import settings
 
@@ -31,12 +31,24 @@ class PatientProfile(TimeStampedModel):
         help_text=_('Important for product safety recommendations')
     )
 
-    # Lifestyle factors stored as JSON
-    lifestyle_factors = models.JSONField(
-        _('Lifestyle Factors'),
-        default=dict,
-        blank=True,
-        help_text=_('JSON object containing lifestyle information')
+    sun_exposure = models.CharField(
+        _('Sun Exposure'),
+        max_length=20,
+        choices=SunExposureChoices.choices,
+        default=SunExposureChoices.MINIMAL
+    )
+
+    stress_level = models.CharField(
+        _('Stress Level'),
+        max_length=20,
+        choices=StressLevelChoices.choices,
+        default=StressLevelChoices.VERY_LOW
+    )
+
+    sleep_hours = models.PositiveSmallIntegerField(
+        _('Sleep Hours'),
+        help_text=_('Average daily sleep hours (0–24)'),
+        default=6
     )
 
     # Profile completion tracking
@@ -81,24 +93,9 @@ class PatientProfile(TimeStampedModel):
             else:
                 if getattr(self, field):
                     completed_fields += 1
-
-        # Check lifestyle factors
-        if self.lifestyle_factors:
-            completed_fields += 1
         total_fields += 1
 
         percentage = int((completed_fields / total_fields) * 100)
         self.completion_percentage = percentage
         self.profile_completed = percentage >= 80
         return percentage
-
-    def update_lifestyle_factor(self, key, value):
-        """Update a specific lifestyle factor"""
-        if not self.lifestyle_factors:
-            self.lifestyle_factors = {}
-        self.lifestyle_factors[key] = value
-        self.save()
-
-    def get_lifestyle_factor(self, key, default=None):
-        """Get a specific lifestyle factor"""
-        return self.lifestyle_factors.get(key, default) if self.lifestyle_factors else default

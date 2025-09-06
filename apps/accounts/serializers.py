@@ -5,7 +5,10 @@ from django.contrib.auth import get_user_model
 from apps.accounts.email_service import send_verification_email_to_user
 from apps.accounts.models import PatientProfile, Doctor
 from django.utils.translation import gettext_lazy as _
-from apps.shared.enums import GenderChoices, UserTypeChoices, SkinTypeChoices, ApprovalStatusChoices
+from apps.shared.enums import (
+    GenderChoices, UserTypeChoices, SkinTypeChoices, ApprovalStatusChoices,
+    StressLevelChoices, SunExposureChoices
+)
 
 User = get_user_model()
 
@@ -139,8 +142,10 @@ class PatientProfileSerializer(BaseProfileSerializer, serializers.ModelSerialize
     """Serializer for patient profile setup"""
     skin_type = serializers.ChoiceField(choices=SkinTypeChoices.choices, required=False)
     is_pregnant = serializers.BooleanField(default=False)
-    lifestyle_factors = serializers.JSONField(default=dict, required=False)
 
+    sleep_hours = serializers.IntegerField(required=True)
+    stress_level = serializers.ChoiceField(choices=StressLevelChoices.choices,required=True)
+    sun_exposure = serializers.ChoiceField(choices=SunExposureChoices.choices,required=True)
     # Add computed fields
     completion_percentage = serializers.IntegerField(read_only=True)
     profile_completed = serializers.BooleanField(read_only=True)
@@ -151,7 +156,8 @@ class PatientProfileSerializer(BaseProfileSerializer, serializers.ModelSerialize
             'id','email','full_name', 'first_name', 'last_name',
             'birth_date','gender', 'phone', 'user_type',
             'profile_image', 'skin_type', 'is_pregnant',
-            'lifestyle_factors', 'completion_percentage', 'profile_completed'
+            'sleep_hours','stress_level','sun_exposure',
+            'completion_percentage', 'profile_completed'
         ]
 
     def update(self, instance, validated_data):
