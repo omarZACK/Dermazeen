@@ -1,10 +1,15 @@
-# Python
+# =========================
+# Python & Build Artifacts
+# =========================
 __pycache__/
 *.py[cod]
 *$py.class
 *.so
+*.pyd
+*.pyo
+
+# Distribution / packaging
 .Python
-env/
 build/
 develop-eggs/
 dist/
@@ -17,26 +22,111 @@ parts/
 sdist/
 var/
 wheels/
+share/python-wheels/
 *.egg-info/
 .installed.cfg
 *.egg
-venv/
+MANIFEST
+
+# =========================
+# Virtual Environments
+# =========================
 .env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
 
-# Django
-*.log
-local_settings.py
-db.sqlite3
-db.sqlite3-journal
-media/
+# =========================
+# Jupyter Notebook
+# =========================
+.ipynb_checkpoints
+*.nbconvert.ipynb
 
-# AI Models (Ignoring large weights, GitHub limit is 100MB)
+# =========================
+# AI / ML / Data Science
+# =========================
+# Model checkpoints
+*.ckpt
+*.ckpt.*
 *.pth
 *.pt
+*.onnx
+*.tflite
 *.h5
+*.pb
+*.joblib
 *.pkl
-# IDEs
-.idea/
+*.pickle
+*.dill
+
+# Hugging Face Transformers
+.cache/
+transformers_cache/
+datasets/
+hf_cache/
+huggingface/
+
+# TensorBoard logs
+logs/
+tensorboard/
+tb_logs/
+
+# MLflow
+mlruns/
+
+# Weights & Biases
+wandb/
+
+# FastAI
+models/
+
+# PyCaret
+pycaret/
+
+# =========================
+# Data Files
+# =========================
+*.csv
+*.tsv
+*.parquet
+*.feather
+*.orc
+*.arff
+*.data
+*.dat
+*.npz
+*.npy
+*.hdf5
+*.h5
+*.mat
+*.xls
+*.xlsx
+
+# Large raw data
+data/
+datasets/
+raw_data/
+processed_data/
+
+# =========================
+# IDE / Editor
+# =========================
+# VS Code
 .vscode/
-*.swp
-*.swo
+.history/
+
+# PyCharm
+.idea/
+*.iml
+
+# JupyterLab
+.jupyter/
+
+# =========================
+# OS Files
+# =========================
+.DS_Store
+Thumbs.db
