@@ -34,7 +34,7 @@ media/
 *.pth
 *.pt
 *.h5
-
+*.pkl
 # IDEs
 .idea/
 .vscode/
